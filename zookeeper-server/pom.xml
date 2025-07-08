@@ -272,24 +272,51 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
-          <forkCount>${surefire-forkcount}</forkCount>
-          <reuseForks>false</reuseForks>
-          <argLine>-Xmx512m -Dtest.junit.threads=${surefire-forkcount} -Dzookeeper.junit.threadid=${surefire.forkNumber} -javaagent:${org.jmockit:jmockit:jar}</argLine>
-          <basedir>${project.basedir}</basedir>
-          <systemPropertyVariables>
-            <build.test.dir>${project.build.directory}/surefire</build.test.dir>
-            <zookeeper.DigestAuthenticationProvider.superDigest>super:D/InIHSb7yEEbrWz8b9l71RjZJU=</zookeeper.DigestAuthenticationProvider.superDigest>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
 
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.20.0</version>
+        <configuration>
+          <targetClasses>
+            <param>org.apache.zookeeper.util.CircularBlockingQueue</param>
+          </targetClasses>
+          <targetTests>
+            <param>org.apache.zookeeper.CircularBlockingQueueLLMTest</param>
+            <param>org.apache.zookeeper.CircularBlockingQueueManualTest</param>
+          </targetTests>
+          <excludedClasses>
+            <param>org.apache.zookeeper.randoop.*</param>
+          </excludedClasses>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>1.1.2</version>
+          </dependency>
+        </dependencies>
+      </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
@@ -345,6 +372,17 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+          <useModulePath>false</useModulePath>
+        </configuration>
       </plugin>
      </plugins>
   </build>

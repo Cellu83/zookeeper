@@ -162,7 +162,7 @@ public class CircularBlockingQueue<E> implements BlockingQueue<E> {
    * @return True if a thread is blocked waiting for a new element to be offered
    *         to the queue
    */
-  boolean isConsumerThreadBlocked() {
+  public boolean isConsumerThreadBlocked() {
     final ReentrantLock lock = this.lock;
     lock.lock();
     try {
