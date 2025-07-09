@@ -13,9 +13,18 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe di test per verificare il corretto comportamento di alcune funzionalità della classe FastLeaderElection,
+ * tra cui il confronto tra voti (totalOrderPredicate), la verifica del quorum raggiunto (getVoteTracker),
+ * la gestione del voto corrente e del logical clock, e la validazione del leader proposto (checkLeader).
+ */
 public class FastLeaderElectionTest {
 
-    // Stub per testare funzionalità non esposte direttamente da FastLeaderElection
+    /**
+     * Stub della classe FastLeaderElection usato per testare metodi protetti e simulare scenari controllati.
+     * Permette di impostare direttamente un voto fittizio tramite setVote() e fornisce una versione semplificata
+     * di getVote(), utile per testare l'accesso al voto corrente senza dover avviare tutto il meccanismo di elezione.
+     */
     private static class FastLeaderElectionStub extends FastLeaderElection {
         private Vote currentVote;
 
@@ -35,6 +44,12 @@ public class FastLeaderElectionTest {
 
     private FastLeaderElectionStub election;
 
+    /**
+     * Metodo eseguito prima di ogni test.
+     * Crea un'istanza di QuorumPeer con ID 1 e configura un QuorumMaj composto da 3 server,
+     * condizione necessaria per la corretta simulazione del quorum (che richiede almeno 2 voti su 3).
+     * L'istanza di FastLeaderElectionStub è costruita con questo peer e usata per eseguire i test.
+     */
     @BeforeEach
     void setUp() throws SaslException, QuorumPeerConfig.ConfigException {
         QuorumPeer self = new QuorumPeer();
