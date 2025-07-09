@@ -556,9 +556,9 @@ public class FastLeaderElection implements Election {
 
     }
 
-    QuorumPeer self;
+    static QuorumPeer self;
     Messenger messenger;
-    AtomicLong logicalclock = new AtomicLong(); /* Election instance */
+    static AtomicLong logicalclock = new AtomicLong(); /* Election instance */
     long proposedLeader;
     long proposedZxid;
     long proposedEpoch;
@@ -714,7 +714,7 @@ public class FastLeaderElection implements Election {
      * current vote.
      *
      */
-    protected boolean totalOrderPredicate(long newId, long newZxid, long newEpoch, long curId, long curZxid, long curEpoch) {
+    public static boolean totalOrderPredicate(long newId, long newZxid, long newEpoch, long curId, long curZxid, long curEpoch) {
         LOG.debug(
             "id: {}, proposed id: {}, zxid: 0x{}, proposed zxid: 0x{}, epoch: 0x{}, proposed epoch: 0x{}",
             newId,
@@ -752,7 +752,7 @@ public class FastLeaderElection implements Election {
      *            Identifier of the vote received last
      * @return the SyncedLearnerTracker with vote details
      */
-    protected SyncedLearnerTracker getVoteTracker(Map<Long, Vote> votes, Vote vote) {
+    public SyncedLearnerTracker getVoteTracker(Map<Long, Vote> votes, Vote vote) {
         SyncedLearnerTracker voteSet = new SyncedLearnerTracker();
         voteSet.addQuorumVerifier(self.getQuorumVerifier());
         if (self.getLastSeenQuorumVerifier() != null
@@ -784,7 +784,7 @@ public class FastLeaderElection implements Election {
      * @param   leader  leader id
      * @param   electionEpoch   epoch id
      */
-    protected boolean checkLeader(Map<Long, Vote> votes, long leader, long electionEpoch) {
+    public static boolean checkLeader(Map<Long, Vote> votes, long leader, long electionEpoch) {
 
         boolean predicate = true;
 

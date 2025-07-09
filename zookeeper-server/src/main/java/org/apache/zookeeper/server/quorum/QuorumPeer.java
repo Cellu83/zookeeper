@@ -688,7 +688,7 @@ public class QuorumPeer extends ZooKeeperThread implements QuorumStats.Provider 
     }
 
     // VisibleForTesting
-    void setId(long id) {
+    public void setId(long id) {
         this.myid = id;
     }
 
